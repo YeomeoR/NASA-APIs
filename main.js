@@ -16,7 +16,7 @@ mars.addEventListener('click', () => {
 });
 // grab the reload button
 const reload = document.getElementById('reload');
-reload.addEventListener('click', () => window.location.reload())
+reload.addEventListener('click', () => window.location.reload());
 
 // APIs are asynchronous requests
 async function sendApodRequest() {
@@ -35,6 +35,7 @@ async function sendApodRequest() {
   // call a function to show the data in the browser
   useApodData(data); // pass in the data you requested
 }
+
 // create the called function to show the data in the browser
 function useApodData(data) {
   document.getElementById('content').innerHTML += `<h2>${data.title}</h2>`;
@@ -47,12 +48,17 @@ function useApodData(data) {
   ).innerHTML += `<p>(Scroll down to see a description of the image)</p> <br><br>`;
   document.getElementById('content').innerHTML += `<p>${data.explanation}</p>`;
   //remove the other items from the DOM
+  
   h1.remove();
   apod.remove();
 }
 async function sendMarsRequest() {
-  const res = await fetch(
-    `https://api.nasa.gov/mars-photos/api/v1/rovers/spirit/photos?sol=500&camera=pancam&api_key=${apiKey}`,
+    const sol = () => Math.floor(Math.random() * (999 - 1) + 1);
+   
+    console.log(sol)
+    const res = await fetch(
+      
+    `https://api.nasa.gov/mars-photos/api/v1/rovers/spirit/photos?sol=${sol(1,999)}&camera=pancam&api_key=${apiKey}`,
   );
   console.log(res);
   let data = await res.json();
@@ -61,12 +67,22 @@ async function sendMarsRequest() {
 }
 
 function useMarsData(data) {
-    document.getElementById('content').innerHTML += `<h2>Pictures from 'Spirit' Rover on 'sol 500'</h2>`
-    document.getElementById('content').innerHTML += `<img src="${data.photos[10].img_src}" />`
-    document.getElementById('content').innerHTML += `<img src="${data.photos[20].img_src}" />`
-    document.getElementById('content').innerHTML += `<img src="${data.photos[3].img_src}" />`
-    document.getElementById('content').innerHTML += `<img src="${data.photos[14].img_src}" />`
-    h1.remove();
-    apod.remove();
-    mars.remove();
+  document.getElementById(
+    'content',
+  ).innerHTML += `<h2>Pictures from 'Spirit' Rover on sol ${data.photos[0].sol}</h2>`;
+  document.getElementById(
+    'content',
+  ).innerHTML += `<img src="${data.photos[1].img_src}" />`;
+  document.getElementById(
+    'content',
+  ).innerHTML += `<img src="${data.photos[2].img_src}" />`;
+  document.getElementById(
+    'content',
+  ).innerHTML += `<img src="${data.photos[3].img_src}" />`;
+  document.getElementById(
+    'content',
+  ).innerHTML += `<img src="${data.photos[4].img_src}" />`;
+  h1.remove();
+  apod.remove();
+  mars.remove();
 }
